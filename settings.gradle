@@ -1,0 +1,3 @@
+include ':MVVM'
+include ':app'
+rootProject.name = "Kotlin-Jetpack-MVVM"
