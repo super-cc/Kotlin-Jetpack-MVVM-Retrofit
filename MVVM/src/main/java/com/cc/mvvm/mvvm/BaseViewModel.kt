@@ -14,7 +14,7 @@ abstract class BaseViewModel : ViewModel() {
     val loadStateLiveData = MutableLiveData<LoadState>()
     val hasMoreStateLiveData = MutableLiveData<HasMoreState>()
 
-    fun init(arguments: Bundle?) {}
+    open fun init(arguments: Bundle?) {}
 
     /**
      * 加载数据开始  用调用V层的loadStart
