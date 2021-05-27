@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.cc.mvvm.base.BaseFragment
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by guoshichao on 2021/2/20
@@ -42,7 +45,7 @@ abstract class MVVMBaseFragment<M : BaseViewModel> : BaseFragment() {
     }
 
     private fun load() {
-        mViewModel = getViewModel()
+        mViewModel = getViewModel()!!
         mViewModel.init(arguments)
         loadState()
         onRegisterLiveListener()
@@ -56,9 +59,27 @@ abstract class MVVMBaseFragment<M : BaseViewModel> : BaseFragment() {
     protected open fun onPrepare() {}
 
     /**
+     * 返回ViewModelStoreOwner
+     */
+    protected open fun getViewModelStoreOwner() : ViewModelStoreOwner {
+        return this
+    }
+
+    /**
      * 获取ViewModel
      */
-    abstract fun getViewModel(): M
+    protected open fun getViewModel(): M? {
+        //这里获得到的是类的泛型的类型
+        val type = javaClass.genericSuperclass
+        if (type != null && type is ParameterizedType) {
+            val actualTypeArguments = type.actualTypeArguments
+            val tClass = actualTypeArguments[0]
+            return ViewModelProvider(this,
+                    ViewModelProvider.AndroidViewModelFactory.getInstance(activity!!.application))
+                    .get(tClass as Class<M>)
+        }
+        return null
+    }
 
     /**
      * LiveEventBus的Listener

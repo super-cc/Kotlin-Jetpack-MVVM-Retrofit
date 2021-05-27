@@ -2,7 +2,10 @@ package com.cc.mvvm.mvvm
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.cc.mvvm.base.BaseActivity
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by guoshichao on 2021/2/20
@@ -18,7 +21,7 @@ abstract class MVVMBaseActivity<M : BaseViewModel> : BaseActivity() {
         super.onCreate(savedInstanceState)
         onPrepare()
         setContentView(layoutId)
-        mViewModel = getViewModel()
+        mViewModel = getViewModel()!!
         mViewModel.init(if (intent != null) intent.extras else null)
         loadState()
         onRegisterLiveListener()
@@ -32,9 +35,27 @@ abstract class MVVMBaseActivity<M : BaseViewModel> : BaseActivity() {
     protected open fun onPrepare() {}
 
     /**
+     * 返回ViewModelStoreOwner
+     */
+    protected open fun getViewModelStoreOwner() : ViewModelStoreOwner {
+        return this
+    }
+
+    /**
      * 获取ViewModel
      */
-    abstract fun getViewModel(): M
+    protected open fun getViewModel(): M? {
+        //这里获得到的是类的泛型的类型
+        val type = javaClass.genericSuperclass
+        if (type != null && type is ParameterizedType) {
+            val actualTypeArguments = type.actualTypeArguments
+            val tClass = actualTypeArguments[0]
+            return ViewModelProvider(this,
+                    ViewModelProvider.AndroidViewModelFactory.getInstance(application))
+                    .get(tClass as Class<M>)
+        }
+        return null
+    }
 
     /**
      * LiveEventBus的Listener
