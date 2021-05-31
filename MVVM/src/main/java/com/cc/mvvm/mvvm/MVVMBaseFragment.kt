@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.viewbinding.ViewBinding
 import com.cc.mvvm.base.BaseFragment
 import java.lang.reflect.ParameterizedType
 
@@ -14,11 +15,9 @@ import java.lang.reflect.ParameterizedType
  * Created by guoshichao on 2021/2/20
  * MVVM BaseFragment
  */
-abstract class MVVMBaseFragment<M : BaseViewModel> : BaseFragment() {
+abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragment() {
 
-    abstract val layoutId: Int
-
-    private var mRootView: View? = null
+    protected lateinit var mViewBinding: V
 
     protected lateinit var mViewModel: M
 
@@ -29,14 +28,9 @@ abstract class MVVMBaseFragment<M : BaseViewModel> : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mRootView = inflater.inflate(layoutId, container, false)
+        mViewBinding = getViewBinding()
 
-        return mRootView!!
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mRootView = null
+        return mViewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,6 +53,11 @@ abstract class MVVMBaseFragment<M : BaseViewModel> : BaseFragment() {
     protected open fun onPrepare() {}
 
     /**
+     * 获取ViewBinding
+     */
+    abstract fun getViewBinding(): V
+
+    /**
      * 返回ViewModelStoreOwner
      */
     protected open fun getViewModelStoreOwner() : ViewModelStoreOwner {
@@ -73,7 +72,7 @@ abstract class MVVMBaseFragment<M : BaseViewModel> : BaseFragment() {
         val type = javaClass.genericSuperclass
         if (type != null && type is ParameterizedType) {
             val actualTypeArguments = type.actualTypeArguments
-            val tClass = actualTypeArguments[0]
+            val tClass = actualTypeArguments[1]
             return ViewModelProvider(this,
                     ViewModelProvider.AndroidViewModelFactory.getInstance(activity!!.application))
                     .get(tClass as Class<M>)

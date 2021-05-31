@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.viewbinding.ViewBinding
 import com.cc.mvvm.base.BaseActivity
 import java.lang.reflect.ParameterizedType
 
@@ -11,16 +12,17 @@ import java.lang.reflect.ParameterizedType
  * Created by guoshichao on 2021/2/20
  * MVVM BaseActivity
  */
-abstract class MVVMBaseActivity<M : BaseViewModel> : BaseActivity() {
+abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivity() {
 
-    protected abstract val layoutId: Int
+    protected lateinit var mViewBinding: V
 
     protected lateinit var mViewModel: M
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onPrepare()
-        setContentView(layoutId)
+        mViewBinding = getViewBinding()
+        setContentView(mViewBinding.root)
         mViewModel = getViewModel()!!
         mViewModel.init(if (intent != null) intent.extras else null)
         loadState()
@@ -33,6 +35,11 @@ abstract class MVVMBaseActivity<M : BaseViewModel> : BaseActivity() {
      * 预配置
      */
     protected open fun onPrepare() {}
+
+    /**
+     * 获取ViewBinding
+     */
+    abstract fun getViewBinding(): V
 
     /**
      * 返回ViewModelStoreOwner
@@ -49,7 +56,7 @@ abstract class MVVMBaseActivity<M : BaseViewModel> : BaseActivity() {
         val type = javaClass.genericSuperclass
         if (type != null && type is ParameterizedType) {
             val actualTypeArguments = type.actualTypeArguments
-            val tClass = actualTypeArguments[0]
+            val tClass = actualTypeArguments[1]
             return ViewModelProvider(this,
                     ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                     .get(tClass as Class<M>)

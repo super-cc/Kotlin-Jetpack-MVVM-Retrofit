@@ -1,5 +1,6 @@
 package com.cc.kotlin_jetpack_mvvm
 
+import androidx.lifecycle.MutableLiveData
 import com.cc.mvvm.mvvm.BaseViewModel
 
 /**
@@ -7,6 +8,10 @@ import com.cc.mvvm.mvvm.BaseViewModel
  */
 class MainViewModel : BaseViewModel() {
 
+    val modelLiveData = MutableLiveData<String>()
 
+    fun getModel() {
+        modelLiveData.value = "Hello!!!"
+    }
 
 }
