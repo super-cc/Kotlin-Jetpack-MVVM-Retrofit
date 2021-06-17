@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewbinding.ViewBinding
 import com.cc.mvvm.base.BaseActivity
+import java.lang.NullPointerException
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -14,21 +15,25 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivity() {
 
-    protected lateinit var mViewBinding: V
+    private var mViewBinding: V? = null
 
-    protected lateinit var mViewModel: M
+    private var mViewModel: M? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onPrepare()
-        mViewBinding = getViewBinding()
-        setContentView(mViewBinding.root)
-        mViewModel = getViewModel()!!
-        mViewModel.init(if (intent != null) intent.extras else null)
+        mViewBinding = createViewBinding()
+        setContentView(getViewBinding().root)
+        mViewModel = createViewModel()
+        getViewModel().init(if (intent != null) intent.extras else null)
         loadState()
         onRegisterLiveListener()
         liveDataObserver()
         init()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     /**
@@ -37,9 +42,19 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
     protected open fun onPrepare() {}
 
     /**
+     * 创建ViewBinding
+     */
+    abstract fun createViewBinding(): V
+
+    /**
      * 获取ViewBinding
      */
-    abstract fun getViewBinding(): V
+    fun getViewBinding():V {
+        if (mViewBinding != null) {
+            return mViewBinding as V
+        }
+        throw MVVMRuntimeException("ViewBinding is null")
+    }
 
     /**
      * 返回ViewModelStoreOwner
@@ -49,9 +64,9 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
     }
 
     /**
-     * 获取ViewModel
+     * 创建ViewModel
      */
-    protected open fun getViewModel(): M? {
+    protected open fun createViewModel(): M {
         //这里获得到的是类的泛型的类型
         val type = javaClass.genericSuperclass
         if (type != null && type is ParameterizedType) {
@@ -61,7 +76,17 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
                     ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                     .get(tClass as Class<M>)
         }
-        return null
+        throw MVVMRuntimeException("ViewModel init error")
+    }
+
+    /**
+     * 获取ViewModel
+     */
+    fun getViewModel(): M {
+        if (mViewModel != null) {
+            return mViewModel as M
+        }
+        throw MVVMRuntimeException("ViewModel is null")
     }
 
     /**
@@ -78,14 +103,14 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
      * 回调刷新控件状态
      */
     private fun loadState() {
-        mViewModel.loadStateLiveData.observe(this, Observer {
+        getViewModel().loadStateLiveData.observe(this, Observer {
             when (it) {
                 LoadState.LoadStart -> loadStart()
                 LoadState.LoadSuccess -> loadFinish(true)
                 LoadState.LoadFail -> loadFinish(false)
             }
         })
-        mViewModel.hasMoreStateLiveData.observe(this, Observer {
+        getViewModel().hasMoreStateLiveData.observe(this, Observer {
             when (it) {
                 HasMoreState.HasMore -> hasMore()
                 HasMoreState.NoMore -> noMore()

@@ -7,12 +7,12 @@ import com.cc.mvvm.mvvm.observe
 
 class MainActivity : MVVMBaseActivity<ActivityMainBinding, MainViewModel>() {
 
-    override fun getViewBinding(): ActivityMainBinding {
+    override fun createViewBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
     }
 
     override fun liveDataObserver() {
-        observe(mViewModel.modelLiveData, ::showToast)
+        observe(getViewModel().modelLiveData, ::showToast)
     }
 
     private fun showToast(message : String) {
@@ -20,8 +20,8 @@ class MainActivity : MVVMBaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun init() {
-        mViewBinding.tvHello.setOnClickListener{
-            mViewModel.getModel()
+        getViewBinding().tvHello.setOnClickListener{
+            getViewModel().getModel()
         }
     }
 
