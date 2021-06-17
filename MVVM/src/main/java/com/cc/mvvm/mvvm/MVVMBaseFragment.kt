@@ -66,7 +66,7 @@ abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragme
     /**
      * 获取ViewBinding
      */
-    fun getViewBinding():V {
+    protected fun getViewBinding():V {
         if (mViewBinding != null) {
             return mViewBinding as V
         }
@@ -99,7 +99,7 @@ abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragme
     /**
      * 获取ViewModel
      */
-    fun getViewModel(): M {
+    protected fun getViewModel(): M {
         if (mViewModel != null) {
             return mViewModel as M
         }

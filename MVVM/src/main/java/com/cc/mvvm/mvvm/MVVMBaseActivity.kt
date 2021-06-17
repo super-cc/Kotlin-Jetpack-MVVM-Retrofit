@@ -49,7 +49,7 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
     /**
      * 获取ViewBinding
      */
-    fun getViewBinding():V {
+    protected fun getViewBinding():V {
         if (mViewBinding != null) {
             return mViewBinding as V
         }
@@ -82,7 +82,7 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
     /**
      * 获取ViewModel
      */
-    fun getViewModel(): M {
+    protected fun getViewModel(): M {
         if (mViewModel != null) {
             return mViewModel as M
         }
