@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewbinding.ViewBinding
 import com.cc.mvvm.base.BaseFragment
+import com.cc.mvvm.extensions.viewBinding
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -17,9 +18,11 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragment() {
 
-    private var mViewBinding: V? = null
+    abstract val layoutId: Int
 
-    private var mViewModel: M? = null
+    val mViewBinding:V by viewBinding(::bindViewBinding)
+
+    val mViewModel: M by lazy { createViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +31,7 @@ abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragme
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mViewBinding = createViewBinding()
-
-        return getViewBinding().root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        //Fragment使用，需要在onDestroyView里将ViewBinding置空
-        mViewBinding = null
+        return inflater.inflate(layoutId, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,8 +40,7 @@ abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragme
     }
 
     private fun load() {
-        mViewModel = createViewModel()
-        getViewModel().init(arguments)
+        mViewModel.init(arguments)
         loadState()
         onRegisterLiveListener()
         liveDataObserver()
@@ -59,19 +53,9 @@ abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragme
     protected open fun onPrepare() {}
 
     /**
-     * 创建ViewBinding
+     * 绑定ViewBinding
      */
-    abstract fun createViewBinding(): V
-
-    /**
-     * 获取ViewBinding
-     */
-    protected fun getViewBinding():V {
-        if (mViewBinding != null) {
-            return mViewBinding as V
-        }
-        throw MVVMRuntimeException("ViewBinding is null")
-    }
+    abstract fun bindViewBinding(view: View): V
 
     /**
      * 返回ViewModelStoreOwner
@@ -97,16 +81,6 @@ abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragme
     }
 
     /**
-     * 获取ViewModel
-     */
-    protected fun getViewModel(): M {
-        if (mViewModel != null) {
-            return mViewModel as M
-        }
-        throw MVVMRuntimeException("ViewModel is null")
-    }
-
-    /**
      * LiveEventBus的Listener
      */
     protected open fun onRegisterLiveListener() {}
@@ -125,14 +99,14 @@ abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragme
      * 回调刷新控件状态
      */
     private fun loadState() {
-        getViewModel().loadStateLiveData.observe(viewLifecycleOwner, Observer {
+        mViewModel.loadStateLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 LoadState.LoadStart -> loadStart()
                 LoadState.LoadSuccess -> loadFinish(true)
                 LoadState.LoadFail -> loadFinish(false)
             }
         })
-        getViewModel().hasMoreStateLiveData.observe(viewLifecycleOwner, Observer {
+        mViewModel.hasMoreStateLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 HasMoreState.HasMore -> hasMore()
                 HasMoreState.NoMore -> noMore()

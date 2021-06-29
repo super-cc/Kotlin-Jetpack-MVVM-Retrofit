@@ -1,12 +1,13 @@
 package com.cc.mvvm.mvvm
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewbinding.ViewBinding
 import com.cc.mvvm.base.BaseActivity
-import java.lang.NullPointerException
+import com.cc.mvvm.extensions.viewBinding
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -15,25 +16,21 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivity() {
 
-    private var mViewBinding: V? = null
+    abstract val layoutId: Int
 
-    private var mViewModel: M? = null
+    val mViewBinding:V by viewBinding(::bindViewBinding)
+
+    val mViewModel: M by lazy { createViewModel() }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onPrepare()
-        mViewBinding = createViewBinding()
-        setContentView(getViewBinding().root)
-        mViewModel = createViewModel()
-        getViewModel().init(if (intent != null) intent.extras else null)
+        setContentView(layoutId)
+        mViewModel.init(if (intent != null) intent.extras else null)
         loadState()
         onRegisterLiveListener()
         liveDataObserver()
         init()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     /**
@@ -42,24 +39,14 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
     protected open fun onPrepare() {}
 
     /**
-     * 创建ViewBinding
+     * 绑定ViewBinding
      */
-    abstract fun createViewBinding(): V
-
-    /**
-     * 获取ViewBinding
-     */
-    protected fun getViewBinding():V {
-        if (mViewBinding != null) {
-            return mViewBinding as V
-        }
-        throw MVVMRuntimeException("ViewBinding is null")
-    }
+    abstract fun bindViewBinding(view: View): V
 
     /**
      * 返回ViewModelStoreOwner
      */
-    protected open fun getViewModelStoreOwner() : ViewModelStoreOwner {
+    protected open fun getViewModelStoreOwner(): ViewModelStoreOwner {
         return this
     }
 
@@ -80,16 +67,6 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
     }
 
     /**
-     * 获取ViewModel
-     */
-    protected fun getViewModel(): M {
-        if (mViewModel != null) {
-            return mViewModel as M
-        }
-        throw MVVMRuntimeException("ViewModel is null")
-    }
-
-    /**
      * LiveEventBus的Listener
      */
     protected open fun onRegisterLiveListener() {}
@@ -103,14 +80,14 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
      * 回调刷新控件状态
      */
     private fun loadState() {
-        getViewModel().loadStateLiveData.observe(this, Observer {
+        mViewModel.loadStateLiveData.observe(this, Observer {
             when (it) {
                 LoadState.LoadStart -> loadStart()
                 LoadState.LoadSuccess -> loadFinish(true)
                 LoadState.LoadFail -> loadFinish(false)
             }
         })
-        getViewModel().hasMoreStateLiveData.observe(this, Observer {
+        mViewModel.hasMoreStateLiveData.observe(this, Observer {
             when (it) {
                 HasMoreState.HasMore -> hasMore()
                 HasMoreState.NoMore -> noMore()
