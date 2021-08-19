@@ -40,7 +40,6 @@ inline fun <V : ViewBinding> ComponentActivity.viewBinding(
 /**
  * Fragment
  */
-@Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragment")
 inline fun <F : Fragment, V : ViewBinding> Fragment.viewBinding(
     crossinline viewBinder: (View) -> V,
@@ -55,23 +54,11 @@ inline fun <F : Fragment, V : ViewBinding> Fragment.viewBinding(
 }
 
 /**
- * viewGroup
- */
-@Suppress("UNCHECKED_CAST")
-@JvmName("viewBindingFragment")
-inline fun <P : ViewGroup, V : ViewBinding> ViewGroup.viewBinding(
-    crossinline viewBinder: (View) -> V,
-    crossinline viewProvider: (P) -> View = ViewGroup::getRootView
-): ViewBindingProperty<P, V> = CustomViewBindingProperty { popView: P ->
-    viewBinder(viewProvider(popView))
-}
-
-/**
  * ViewBindingProperty
  */
 private const val TAG = "ViewBindingProperty"
 
-interface ViewBindingProperty<in R : Any, out V : ViewBinding> : ReadOnlyProperty<R, V> {
+interface ViewBindingProperty<in R : Any, out V : ViewBinding> : ReadOnlyProperty<R, V?> {
     @MainThread
     fun clear()
 }
@@ -82,7 +69,6 @@ class CustomViewBindingProperty<in R : Any, out V : ViewBinding>(
 
     private var viewBinding: V? = null
 
-    @Suppress("UNCHECKED_CAST")
     @MainThread
     override fun getValue(thisRef: R, property: KProperty<*>): V {
         viewBinding?.let { return it }
@@ -104,28 +90,36 @@ abstract class LifecycleViewBindingProperty<in R : Any, out V : ViewBinding>(
 
     private var viewBinding: V? = null
 
-    protected abstract fun getLifecycleOwner(thisRef: R): LifecycleOwner
+    protected abstract fun getLifecycle(thisRef: R): Lifecycle
 
     @MainThread
-    override fun getValue(thisRef: R, property: KProperty<*>): V {
+    override fun getValue(thisRef: R, property: KProperty<*>): V? {
         // Already bound
         viewBinding?.let { return it }
 
-        val lifecycle = getLifecycleOwner(thisRef).lifecycle
-        val viewBinding = viewBinder(thisRef)
+        val lifecycle = getLifecycle(thisRef)
+
         if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
-            Log.d(TAG, "Access to viewBinding after Lifecycle is destroyed or hasn't created yet. " +
-                        "The instance of viewBinding will be not cached.")
+            Log.d(
+                TAG, "Access to viewBinding after Lifecycle is destroyed or hasn't created yet. " +
+                        "The instance of viewBinding will be not cached."
+            )
             // We can access to ViewBinding after Fragment.onDestroyView(), but don't save it to prevent memory leak
         } else {
-            lifecycle.addObserver(ClearOnDestroyLifecycleObserver(this))
-            this.viewBinding = viewBinding
+            try {
+                val viewBinding = viewBinder(thisRef)
+                lifecycle.addObserver(ClearOnDestroyLifecycleObserver(this))
+                this.viewBinding = viewBinding
+            } catch (e: IllegalStateException) {
+                Log.e(TAG, "did not return a View from onCreateView() or this was called before onCreateView()")
+            }
         }
         return viewBinding
     }
 
     @MainThread
     override fun clear() {
+        Log.d(TAG, "clear---${viewBinding}")
         viewBinding = null
     }
 
@@ -149,11 +143,16 @@ class FragmentViewBindingProperty<in F : Fragment, out V : ViewBinding>(
     viewBinder: (F) -> V
 ) : LifecycleViewBindingProperty<F, V>(viewBinder) {
 
-    override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
+    override fun getLifecycle(thisRef: F): Lifecycle {
         try {
-            return thisRef.viewLifecycleOwner
+            return thisRef.viewLifecycleOwner.lifecycle
         } catch (ignored: IllegalStateException) {
-            error("Fragment doesn't have view associated with it or the view has been destroyed")
+            Log.e(
+                TAG,
+                "IllegalStateException: Fragment doesn't have view associated with it or the view has been destroyed"
+            )
+            return thisRef.lifecycle
+            //error("Fragment doesn't have view associated with it or the view has been destroyed")
         }
     }
 }
@@ -161,14 +160,15 @@ class FragmentViewBindingProperty<in F : Fragment, out V : ViewBinding>(
 class DialogFragmentViewBindingProperty<in F : Fragment, out V : ViewBinding>(
     viewBinder: (F) -> V
 ) : LifecycleViewBindingProperty<F, V>(viewBinder) {
-    override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
+    override fun getLifecycle(thisRef: F): Lifecycle {
         return if (thisRef is DialogFragment && thisRef.showsDialog) {
-            thisRef
+            thisRef.lifecycle
         } else {
             try {
-                thisRef.viewLifecycleOwner
+                thisRef.viewLifecycleOwner.lifecycle
             } catch (ignored: IllegalStateException) {
-                error("Fragment doesn't have view associated with it or the view has been destroyed")
+                return thisRef.lifecycle
+                //error("Fragment doesn't have view associated with it or the view has been destroyed")
             }
         }
     }
@@ -179,8 +179,8 @@ class ActivityViewBindingProperty<in A : ComponentActivity, out V : ViewBinding>
     viewBinder: (A) -> V
 ) : LifecycleViewBindingProperty<A, V>(viewBinder) {
 
-    override fun getLifecycleOwner(thisRef: A): LifecycleOwner {
-        return thisRef
+    override fun getLifecycle(thisRef: A): Lifecycle {
+        return thisRef.lifecycle
     }
 }
 
@@ -196,6 +196,3 @@ fun findRootView(activity: Activity): View {
         else -> error("More than one child view found in Activity content view")
     }
 }
-
-
-

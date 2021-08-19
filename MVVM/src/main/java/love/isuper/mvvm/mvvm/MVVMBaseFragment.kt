@@ -20,7 +20,7 @@ abstract class MVVMBaseFragment<V : ViewBinding, M : BaseViewModel> : BaseFragme
 
     abstract val layoutId: Int
 
-    val mViewBinding:V by viewBinding(::bindViewBinding)
+    val mViewBinding:V? by viewBinding(::bindViewBinding)
 
     val mViewModel: M by lazy { createViewModel() }
 
