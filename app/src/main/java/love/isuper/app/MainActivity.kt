@@ -23,7 +23,7 @@ class MainActivity : MVVMBaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun init() {
-        mViewBinding.tvHello.setOnClickListener{
+        mViewBinding?.tvHello?.setOnClickListener{
             mViewModel.getModel()
         }
     }
