@@ -61,7 +61,7 @@ abstract class MVVMBaseFragment<VM : BaseViewModel>(private val layoutId: Int) :
         val type = javaClass.genericSuperclass
         if (type != null && type is ParameterizedType) {
             val actualTypeArguments = type.actualTypeArguments
-            val tClass = actualTypeArguments[1]
+            val tClass = actualTypeArguments[0]
             return ViewModelProvider(getViewModelStoreOwner(),
                     ViewModelProvider.AndroidViewModelFactory.getInstance(activity!!.application))
                     .get(tClass as Class<VM>)
