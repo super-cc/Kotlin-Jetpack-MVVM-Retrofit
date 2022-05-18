@@ -1,26 +1,19 @@
 package love.isuper.mvvm.mvvm
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.viewbinding.ViewBinding
 import love.isuper.mvvm.base.BaseActivity
-import love.isuper.mvvm.extensions.viewBinding
 import java.lang.reflect.ParameterizedType
 
 /**
  * Created by guoshichao on 2021/2/20
  * MVVM BaseActivity
  */
-abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivity() {
+abstract class MVVMBaseActivity<VM : BaseViewModel>(private val layoutId: Int) : BaseActivity() {
 
-    abstract val layoutId: Int
-
-    val mViewBinding:V? by viewBinding(::bindViewBinding)
-
-    val mViewModel: M by lazy { createViewModel() }
+    val mViewModel: VM by lazy { createViewModel() }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +32,6 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
     protected open fun onPrepare() {}
 
     /**
-     * 绑定ViewBinding
-     */
-    abstract fun bindViewBinding(view: View): V
-
-    /**
      * 返回ViewModelStoreOwner
      */
     protected open fun getViewModelStoreOwner(): ViewModelStoreOwner {
@@ -53,15 +41,15 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
     /**
      * 创建ViewModel
      */
-    protected open fun createViewModel(): M {
+    protected open fun createViewModel(): VM {
         //这里获得到的是类的泛型的类型
         val type = javaClass.genericSuperclass
         if (type != null && type is ParameterizedType) {
             val actualTypeArguments = type.actualTypeArguments
             val tClass = actualTypeArguments[1]
-            return ViewModelProvider(this,
+            return ViewModelProvider(getViewModelStoreOwner(),
                     ViewModelProvider.AndroidViewModelFactory.getInstance(application))
-                    .get(tClass as Class<M>)
+                    .get(tClass as Class<VM>)
         }
         throw MVVMRuntimeException("ViewModel init error")
     }
@@ -80,19 +68,19 @@ abstract class MVVMBaseActivity<V : ViewBinding, M : BaseViewModel> : BaseActivi
      * 回调刷新控件状态
      */
     private fun loadState() {
-        mViewModel.loadStateLiveData.observe(this, Observer {
+        mViewModel.loadStateLiveData.observe(this) {
             when (it) {
                 LoadState.LoadStart -> loadStart()
                 LoadState.LoadSuccess -> loadFinish(true)
                 LoadState.LoadFail -> loadFinish(false)
             }
-        })
-        mViewModel.hasMoreStateLiveData.observe(this, Observer {
+        }
+        mViewModel.hasMoreStateLiveData.observe(this) {
             when (it) {
                 HasMoreState.HasMore -> hasMore()
                 HasMoreState.NoMore -> noMore()
             }
-        })
+        }
     }
 
     /**

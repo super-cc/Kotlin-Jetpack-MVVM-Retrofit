@@ -1,18 +1,14 @@
 package love.isuper.app
 
-import android.view.View
 import android.widget.Toast
 import love.isuper.app.databinding.ActivityMainBinding
+import love.isuper.mvvm.extensions.viewBinding
 import love.isuper.mvvm.mvvm.MVVMBaseActivity
 import love.isuper.mvvm.mvvm.observe
 
-class MainActivity : MVVMBaseActivity<ActivityMainBinding, MainViewModel>() {
+class MainActivity : MVVMBaseActivity<MainViewModel>(R.layout.activity_main) {
 
-    override val layoutId: Int = R.layout.activity_main
-
-    override fun bindViewBinding(view: View): ActivityMainBinding {
-        return ActivityMainBinding.bind(view)
-    }
+    private val mViewBinding by viewBinding(ActivityMainBinding::bind)
 
     override fun liveDataObserver() {
         observe(mViewModel.modelLiveData, ::showToast)
@@ -23,8 +19,10 @@ class MainActivity : MVVMBaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun init() {
-        mViewBinding?.tvHello?.setOnClickListener{
-            mViewModel.getModel()
+        mViewBinding?.apply {
+            tvHello.setOnClickListener{
+                mViewModel.getModel()
+            }
         }
     }
 
