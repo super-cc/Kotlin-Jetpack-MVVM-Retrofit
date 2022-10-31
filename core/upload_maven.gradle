@@ -1,0 +1,43 @@
+apply plugin: 'maven-publish'
+
+// 声明maven仓库
+def mavenUrl = '' //maven仓库链接
+def mavenAccount = 'irdd' //maven仓库账号
+def mavenPassword = 'irdd&12&' //maven仓库密码
+
+// 声明aar包的版本号
+def aarVersion = '0.0.1'
+def aarGroupId = 'love.isuper.core'
+def aarArtifactId = 'core'
+// 这个是把源码打入aar包中的任务
+task sourceJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+afterEvaluate {
+    publishing {
+        publications {
+            // 这里的release名字是自己起的
+            release(MavenPublication) {
+                groupId = aarGroupId
+                artifactId = aarArtifactId
+                version = aarVersion
+                // 这里除了有 release 还有 debug
+                from components.release
+                // 运行任务，把源码打进去
+                artifact sourceJar
+            }
+        }
+        // 添加仓库地址
+        repositories {
+            maven {
+                allowInsecureProtocol = true
+                url(mavenUrl)
+                credentials {
+                    username = mavenAccount
+                    password = mavenPassword
+                }
+           }
+        }
+    }
+}

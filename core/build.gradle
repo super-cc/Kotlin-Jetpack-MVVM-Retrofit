@@ -1,0 +1,76 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+apply from: 'upload_maven.gradle'
+
+android {
+    compileSdk rootProject.ext.compile_sdk
+
+    defaultConfig {
+        minSdk rootProject.ext.min_sdk
+        targetSdk rootProject.ext.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //官方
+    implementation rootProject.ext.google['core_ktx']
+    implementation rootProject.ext.google['appcompat']
+    implementation rootProject.ext.google['material']
+    implementation rootProject.ext.google['design']
+    implementation rootProject.ext.google['constraint_layout']
+    implementation rootProject.ext.google['coroutines']
+    implementation rootProject.ext.google['navigation_fragment']
+    implementation rootProject.ext.google['navigation_ui']
+    implementation rootProject.ext.google['paging']
+    implementation rootProject.ext.google['room']
+    implementation rootProject.ext.google['room_ktx']
+    implementation rootProject.ext.google['room_paging']
+    kapt rootProject.ext.google['room_compiler']
+    implementation rootProject.ext.google['koin']
+    implementation rootProject.ext.google['koin_scope']
+    implementation rootProject.ext.google['koin_viewmodel']
+
+    //网络下载库
+    implementation rootProject.ext.github['retrofit']
+    implementation rootProject.ext.github['retrofit_converter']
+    implementation rootProject.ext.github['gson']
+    implementation rootProject.ext.github['glide']
+    kapt rootProject.ext.github['glide_compiler']
+
+    //其它
+    implementation rootProject.ext.github['live_event_bus']
+    implementation rootProject.ext.github['refresh_layout']
+    implementation rootProject.ext.github['refresh_header']
+    implementation rootProject.ext.github['quick_adapter']
+    implementation rootProject.ext.github['mmkv']
+    implementation rootProject.ext.github['relinker']
+}

@@ -1,12 +1,19 @@
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+pluginManagement {
     repositories {
-        maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        gradlePluginPortal()
         google()
         mavenCentral()
     }
 }
-rootProject.name = "Kotlin-Jetpack-MVVM"
-include ':mvvm'
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://www.jitpack.io' }
+        google()
+        mavenCentral()
+    }
+}
 include ':app'
+include ':core'

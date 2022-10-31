@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">core</string>
+
+    <string name="core_empty"> </string>
+
+    <string name="core_retry_load">重新加载数据</string>
+    <string name="core_no_more">没有更多数据</string>
+
+    <string name="core_network_error">请求异常，请检查网络</string>
+    <string name="core_url_error">请求链接出现问题</string>
+    <string name="core_download_file">下载失败</string>
+
+</resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomerTitleBar">
+        <attr name="left_icon" format="reference" />
+        <attr name="right_icon" format="reference" />
+        <attr name="center_text" format="string" />
+        <attr name="center_text_color" format="color" />
+        <attr name="center_text_size" format="dimension" />
+        <attr name="left_text" format="string" />
+        <attr name="left_text_color" format="color" />
+        <attr name="left_text_size" format="dimension" />
+        <attr name="right_text" format="string" />
+        <attr name="right_text_color" format="color" />
+        <attr name="right_text_size" format="dimension" />
+        <attr name="title_bar_background" format="reference" />
+    </declare-styleable>
+
+    <style name="Widget.Design.BottomSheet.Modal" parent="android:Widget">
+        <item name="enforceMaterialTheme">false</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:elevation">@dimen/design_bottom_sheet_modal_elevation</item>
+        <item name="behavior_peekHeight">auto</item>
+        <item name="behavior_hideable">true</item>
+        <item name="behavior_skipCollapsed">false</item>
+        <item name="shapeAppearance">@null</item>
+        <item name="shapeAppearanceOverlay">@null</item>
+        <item name="backgroundTint">?android:attr/colorBackground</item>
+    </style>
+
+</resources>

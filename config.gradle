@@ -1,14 +1,42 @@
 ext {
 
-
-    compile_sdk = 30
+    compile_sdk = 31
     min_sdk = 21
-    target_sdk = 30
+    target_sdk = 31
 
     google = [
-            core_ktx : 'androidx.core:core-ktx:1.3.2',
-            appcompat: 'androidx.appcompat:appcompat:1.2.0',
-            material : 'com.google.android.material:material:1.3.0',
+            core_ktx                : 'androidx.core:core-ktx:1.6.0',
+            appcompat               : 'androidx.appcompat:appcompat:1.4.1',
+            material                : 'com.google.android.material:material:1.6.0',
+            design                  : 'com.android.support:design:28.0.0',
+            constraint_layout       : 'androidx.constraintlayout:constraintlayout:2.1.3',
+            coroutines              : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5',
+            navigation_fragment     : 'androidx.navigation:navigation-fragment-ktx:2.3.5',
+            navigation_ui           : 'androidx.navigation:navigation-ui-ktx:2.3.5',
+            paging                  : 'androidx.paging:paging-runtime:3.1.1',
+            room                    : 'androidx.room:room-runtime:2.4.0',
+            room_ktx                : 'androidx.room:room-ktx:2.4.0',
+            room_paging             : 'androidx.room:room-paging:2.5.0-alpha01',
+            room_compiler           : 'androidx.room:room-compiler:2.4.0',
+            koin                    : 'org.koin:koin-android:2.0.1',
+            koin_scope              : 'org.koin:koin-androidx-scope:2.0.1',
+            koin_viewmodel          : 'org.koin:koin-androidx-viewmodel:2.0.1',
+    ]
+
+    github = [
+            retrofit                : 'com.squareup.retrofit2:retrofit:2.9.0',
+            retrofit_converter      : 'com.squareup.retrofit2:converter-scalars:2.5.0',
+            gson                    : 'com.squareup.retrofit2:converter-gson:2.9.0',
+            glide                   : 'com.github.bumptech.glide:glide:4.11.0',
+            glide_compiler          : 'com.github.bumptech.glide:compiler:4.11.0',
+            live_event_bus          : 'io.github.jeremyliao:live-event-bus-x:1.8.0',
+            refresh_layout          : 'io.github.scwang90:refresh-layout-kernel:2.0.5',
+            refresh_header          : 'io.github.scwang90:refresh-header-classics:2.0.5',
+            quick_adapter           : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7',
+            shape                   : 'com.github.getActivity:ShapeView:8.0',
+            permission              : 'com.github.getActivity:XXPermissions:13.6',
+            mmkv                    : 'com.tencent:mmkv:1.2.7',
+            relinker                : 'com.getkeepsafe.relinker:relinker:1.4.4',
     ]
 
 }
