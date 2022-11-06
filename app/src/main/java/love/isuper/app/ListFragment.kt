@@ -1,5 +1,6 @@
 package love.isuper.app
 
+import androidx.lifecycle.lifecycleScope
 import love.isuper.core.mvvm.BaseQListFragment
 import love.isuper.core.mvvm.ListConfig
 

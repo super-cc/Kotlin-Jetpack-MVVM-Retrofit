@@ -2,6 +2,8 @@ package love.isuper.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -57,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = MyFragmentAdapter(this)
 
         // 联动ViewPager2和TabLayout
-        val tabs = arrayOf("QList", "暂无", "暂无")
+        val tabs = arrayOf("QList", "DataStore", "暂无")
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]
         }.attach()
@@ -70,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                     return ListFragment()
                 }
                 1 -> {
-                    return ListFragment()
+                    return DataStoreFragment()
                 }
                 3 -> {
                     return ListFragment()

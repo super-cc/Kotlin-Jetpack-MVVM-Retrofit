@@ -16,7 +16,9 @@ import java.util.Set;
 /**
  * Created by guoshichao on 2022/1/12
  * 替换SharedPreferences为MMKV
+ * 推荐使用DataStore
  */
+@Deprecated
 public final class SuperSharedPreferences {
 
     public static SuperSharedPreferences getDefaultSharedPreferences() {
