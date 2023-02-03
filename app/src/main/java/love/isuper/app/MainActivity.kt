@@ -13,6 +13,8 @@ import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import love.isuper.core.utils.AppInfo
+import love.isuper.core.utils.ToastUtils
+import love.isuper.core.utils.singleclick.setOnSingleClickListener
 import love.isuper.core.view.CustomTitleBar
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +37,11 @@ class MainActivity : AppCompatActivity() {
 
         titleBar.setIvLeftOnClickListener {
 
+        }
+        var n = 0
+        titleBar.ivLeft.setOnSingleClickListener {
+            n++
+            ToastUtils.showShortToast("点击${n}次")
         }
     }
 
