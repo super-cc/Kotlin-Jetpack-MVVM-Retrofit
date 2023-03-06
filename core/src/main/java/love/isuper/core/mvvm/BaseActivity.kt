@@ -23,8 +23,8 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : BaseLogActiv
         mViewBinding = inflateBindingWithGeneric(layoutInflater)
         setContentView(mViewBinding.root)
         mViewModel.init(if (intent != null) intent.extras else null)
-        liveDataObserver()
         init()
+        liveDataObserver()
     }
 
     /**
@@ -56,14 +56,14 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : BaseLogActiv
     }
 
     /**
-     * LiveData的Observer
-     */
-    protected abstract fun liveDataObserver()
-
-    /**
      * 初始化
      */
     protected abstract fun init()
+
+    /**
+     * LiveData的Observer
+     */
+    protected abstract fun liveDataObserver()
 
     /**
      * 返回TAG

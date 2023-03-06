@@ -50,8 +50,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : BaseLogFragm
         }
         _firstLoad = false
         mViewModel.init(arguments)
-        liveDataObserver()
         init()
+        liveDataObserver()
     }
 
     /**
@@ -83,14 +83,14 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : BaseLogFragm
     }
 
     /**
-     * LiveData的Observer
-     */
-    protected abstract fun liveDataObserver()
-
-    /**
      * 初始化
      */
     protected abstract fun init()
+
+    /**
+     * LiveData的Observer
+     */
+    protected abstract fun liveDataObserver()
 
     /**
      * 返回TAG
