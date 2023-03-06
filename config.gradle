@@ -38,6 +38,7 @@ ext {
             refresh_layout          : 'io.github.scwang90:refresh-layout-kernel:2.0.5',
             refresh_header          : 'io.github.scwang90:refresh-header-classics:2.0.5',
             quick_adapter           : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7',
+            stickyheaders           : 'com.brandongogetap:stickyheaders:0.6.2',
             shape                   : 'com.github.getActivity:ShapeView:8.0',
             permission              : 'com.github.getActivity:XXPermissions:13.6',
             mmkv                    : 'com.tencent:mmkv:1.2.7',

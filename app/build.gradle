@@ -57,5 +57,6 @@ dependencies {
     implementation rootProject.ext.github['refresh_layout']
     implementation rootProject.ext.github['refresh_header']
     implementation rootProject.ext.github['quick_adapter']
+    implementation rootProject.ext.github['stickyheaders']
 
 }
