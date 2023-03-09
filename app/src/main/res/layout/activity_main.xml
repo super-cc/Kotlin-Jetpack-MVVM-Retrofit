@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         app:center_text="首页"
         app:left_icon="@drawable/icon_back"
+        app:right_text="展示Dialog"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.tabs.TabLayout

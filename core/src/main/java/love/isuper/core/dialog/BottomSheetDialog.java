@@ -37,7 +37,7 @@ import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
-import com.google.android.material.R;
+import love.isuper.core.R;
 
 /**
  * Created by guoshichao on 2021/1/21
@@ -132,7 +132,7 @@ public class BottomSheetDialog extends AppCompatDialog {
      * or calling `dismiss()` from a `BottomSheetDialogFragment`, tapping outside a dialog, etc...
      *
      * <p>The default animation to dismiss this dialog is a fade-out transition through a
-     * windowAnimation. Call {@link #setDismissWithAnimation(true)} if you want to utilize the
+     * windowAnimation. Call {@link #setDismissWithAnimation(boolean)} if you want to utilize the
      * BottomSheet animation instead.
      *
      * <p>If this function is called from a swipe down interaction, or dismissWithAnimation is false,

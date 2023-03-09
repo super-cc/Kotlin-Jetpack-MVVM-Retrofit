@@ -35,13 +35,13 @@ class MainActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.view_pager)
         init()
 
-        titleBar.setIvLeftOnClickListener {
-
-        }
         var n = 0
         titleBar.ivLeft.setOnSingleClickListener {
             n++
             ToastUtils.showShortToast("点击${n}次")
+        }
+        titleBar.tvRight.setOnClickListener {
+            DialogDemo().show(supportFragmentManager, DialogDemo::javaClass.name)
         }
     }
 

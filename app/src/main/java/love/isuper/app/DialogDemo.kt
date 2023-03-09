@@ -1,21 +1,27 @@
-package love.isuper.app;
+package love.isuper.app
 
-import android.app.Dialog;
-
-import androidx.annotation.NonNull;
-
-import love.isuper.core.dialog.BottomSheetDialogFragment;
+import android.app.Dialog
+import android.graphics.Color
+import android.os.Bundle
+import love.isuper.app.R
+import android.text.method.ScrollingMovementMethod
+import android.view.LayoutInflater
+import android.view.View
+import love.isuper.app.databinding.DialogMenuBinding
+import love.isuper.core.dialog.BottomSheetDialogFragment
 
 /**
  * Created by shichao on 2022/6/27.
  * Company: isuper
  * E-mail: 1169380200@qq.com
  */
-public class DialogDemo extends BottomSheetDialogFragment {
+class DialogDemo : BottomSheetDialogFragment() {
 
-    @Override
-    public void setupDialog(@NonNull Dialog dialog, int style) {
-        super.setupDialog(dialog, style);
-        dialog.setContentView(R.layout.dialog_menu);
+    private val viewBinding by lazy { DialogMenuBinding.inflate(layoutInflater) }
+
+    override fun setupDialog(dialog: Dialog, style: Int) {
+        super.setupDialog(dialog, style)
+        dialog.setContentView(viewBinding.root)
+        viewBinding.textView.movementMethod = ScrollingMovementMethod.getInstance()
     }
 }

@@ -38,9 +38,9 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+        BottomSheetDialog dialog = new BottomSheetDialog(getActivity(), isDialogTransparent() ? R.style.AppBottomSheetDialogTheme : 0);
 
-        if (isTransparentBackground()) {
+        if (isWindowTransparent()) {
             setTransparentBackground(dialog);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -169,8 +169,12 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
         }
     }
 
-    protected boolean isTransparentBackground() {
+    protected boolean isWindowTransparent() {
         return false;
+    }
+
+    protected boolean isDialogTransparent() {
+        return true;
     }
 
     protected boolean isSlideCancelable() {
