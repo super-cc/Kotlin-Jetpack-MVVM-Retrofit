@@ -2,6 +2,7 @@ package love.isuper.core.dialog;
 
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -18,7 +19,6 @@ import androidx.annotation.RequiresApi;
 
 import love.isuper.core.R;
 import love.isuper.core.base.BaseLogDialogFragment;
-import love.isuper.core.utils.AppInfo;
 
 /**
  * Created by guoshichao on 2020/8/20
@@ -158,7 +158,7 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
 
             GradientDrawable navigationBarDrawable = new GradientDrawable();
             navigationBarDrawable.setShape(GradientDrawable.RECTANGLE);
-            navigationBarDrawable.setColor(AppInfo.getApplication().getResources().getColor(R.color.white));
+            navigationBarDrawable.setColor(Color.WHITE);
 
             Drawable[] layers = {dimDrawable, navigationBarDrawable};
 
