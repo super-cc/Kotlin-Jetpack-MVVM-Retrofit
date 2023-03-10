@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 
 import androidx.annotation.CallSuper;
@@ -214,6 +215,14 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
         if (getDialog() != null && getDialog() instanceof BottomSheetDialog) {
             BottomSheetDialog bottomSheetDialog = ((BottomSheetDialog)getDialog());
             bottomSheetDialog.getBehavior().setPeekHeight(peekHeight);
+        }
+    }
+
+    protected void setDialogHeight(View rootView, int dialogHeight) {
+        if (getDialog() != null && getDialog() instanceof BottomSheetDialog) {
+            ViewGroup.LayoutParams lp = rootView.getLayoutParams();
+            lp.height = dialogHeight;
+            rootView.setLayoutParams(lp);
         }
     }
 
