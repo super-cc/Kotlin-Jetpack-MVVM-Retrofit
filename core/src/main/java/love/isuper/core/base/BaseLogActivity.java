@@ -19,59 +19,59 @@ import java.lang.reflect.Method;
  */
 public class BaseLogActivity extends AppCompatActivity {
 
-    public static final String TAG = "BaseActivity";
+    public static final String _TAG = "BaseActivity";
 
     @CallSuper
     protected void onCreate(Bundle args) {
         if (Build.VERSION.SDK_INT == 26 && this.isTranslucentOrFloating()) {
             boolean result = this.fixOrientation();
-            Log.i(TAG, "onCreate fixOrientation when Oreo, result = " + result);
+            Log.i(_TAG, "onCreate fixOrientation when Oreo, result = " + result);
         }
 
         super.onCreate(args);
-        Log.v(TAG, this.getClass().getName() + " onCreate()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onCreate() " + this.getClass().getName() + " " + this);
     }
 
     @CallSuper
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.v(TAG, this.getClass().getName() + " onSaveInstanceState()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onSaveInstanceState() " + this.getClass().getName() + " " + this);
     }
 
     @CallSuper
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.v(TAG, this.getClass().getName() + " onRestoreInstanceState()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onRestoreInstanceState() " + this.getClass().getName() + " " + this);
     }
 
     @CallSuper
     protected void onStart() {
         super.onStart();
-        Log.v(TAG, this.getClass().getName() + " onStart()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onStart() " + this.getClass().getName() + " " + this);
     }
 
     @CallSuper
     protected void onResume() {
         super.onResume();
-        Log.v(TAG, this.getClass().getName() + " onResume()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onResume() " + this.getClass().getName() + " " + this);
     }
 
     @CallSuper
     protected void onPause() {
         super.onPause();
-        Log.v(TAG, this.getClass().getName() + " onPause()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onPause() " + this.getClass().getName() + " " + this);
     }
 
     @CallSuper
     protected void onStop() {
         super.onStop();
-        Log.v(TAG, this.getClass().getName() + " onStop()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onStop() " + this.getClass().getName() + " " + this);
     }
 
     @CallSuper
     protected void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, this.getClass().getName() + " onCreate()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onDestroy() " + this.getClass().getName() + " " + this);
     }
 
     private boolean isTranslucentOrFloating() {
@@ -108,7 +108,7 @@ public class BaseLogActivity extends AppCompatActivity {
     @CallSuper
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.v(TAG, this.getClass().getName() + " onNewIntent()");
+        Log.v(_TAG,  this.getClass().getSimpleName() + " onNewIntent() " + this.getClass().getName() + " " + this);
     }
 
 }
