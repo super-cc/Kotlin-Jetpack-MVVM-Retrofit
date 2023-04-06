@@ -16,7 +16,7 @@ import java.util.ArrayDeque
 /**
  * Created by guoshichao on 2022/5/18
  */
-@Navigator.Name("fixFragment")
+@Navigator.Name("tabFragment")
 class FragmentHideShowNavigator(
     private val mContext: Context,
     private val mFragmentManager: FragmentManager,

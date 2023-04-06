@@ -36,8 +36,8 @@ android {
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation rootProject.ext.google['core_ktx']
     implementation rootProject.ext.google['appcompat']
@@ -45,6 +45,8 @@ dependencies {
     implementation rootProject.ext.google['design']
     implementation rootProject.ext.google['constraint_layout']
 
+    implementation rootProject.ext.google['navigation_fragment']
+    implementation rootProject.ext.google['navigation_ui']
     implementation rootProject.ext.google['coroutines']
     implementation rootProject.ext.google['coroutines_viewmodel']
     implementation rootProject.ext.google['coroutines_runtime']

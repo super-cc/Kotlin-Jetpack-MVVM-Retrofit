@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
@@ -22,7 +23,8 @@ class NavHostFragmentHideShow : NavHostFragment() {
         return frameLayout
     }
 
-    override fun createFragmentNavigator(): Navigator<out FragmentNavigator.Destination?> {
+    @Deprecated("Use {@link #onCreateNavController(NavController)}")
+    override fun createFragmentNavigator(): Navigator<out FragmentNavigator.Destination> {
         return FragmentHideShowNavigator(requireContext(), childFragmentManager, containerId)
     }
 
