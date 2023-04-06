@@ -2,6 +2,8 @@ package love.isuper.app
 
 import love.isuper.core.mvvm.BaseQListFragment
 import love.isuper.core.mvvm.ListConfig
+import love.isuper.core.utils.ToastUtils
+import love.isuper.core.utils.singleclick.setOnSingleClickListener
 
 /**
  * Created by shichao on 2022/7/7.
@@ -16,12 +18,18 @@ class ListFragment: BaseQListFragment<ListViewModel, ListModel>() {
     )
     override val adapter = ListAdapter()
 
-    override fun liveDataObserver() {
-
-    }
-
     override fun init() {
         super.init()
+
+        var n = 0
+        mViewBinding.fab.setOnSingleClickListener {
+            n++
+            ToastUtils.showShortToast("点击${n}次")
+        }
+    }
+
+    override fun liveDataObserver() {
+
     }
 
 }

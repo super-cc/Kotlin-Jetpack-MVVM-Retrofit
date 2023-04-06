@@ -3,15 +3,11 @@ package love.isuper.app
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import love.isuper.app.databinding.ActivityMainBinding
-import love.isuper.core.ext.nav
-import love.isuper.core.ext.navigateAction
 import love.isuper.core.ext.navigateSingleAction
 import love.isuper.core.mvvm.BaseActivity
 import love.isuper.core.mvvm.EmptyViewModel
-import love.isuper.core.utils.ToastUtils
 import love.isuper.core.utils.singleclick.setOnSingleClickListener
 
 class MainActivity : BaseActivity<EmptyViewModel, ActivityMainBinding>() {
@@ -19,10 +15,8 @@ class MainActivity : BaseActivity<EmptyViewModel, ActivityMainBinding>() {
     override fun init() {
         initNav()
 
-        var n = 0
         mViewBinding.titleBar.ivLeft.setOnSingleClickListener {
-            n++
-            ToastUtils.showShortToast("点击${n}次")
+
         }
         mViewBinding.titleBar.tvRight.setOnClickListener {
             DialogDemo().show(supportFragmentManager, DialogDemo::javaClass.name)
