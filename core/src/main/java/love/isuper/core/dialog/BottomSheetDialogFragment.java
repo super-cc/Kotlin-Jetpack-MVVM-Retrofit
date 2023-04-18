@@ -2,6 +2,7 @@ package love.isuper.core.dialog;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -26,6 +27,9 @@ import love.isuper.core.base.BaseLogDialogFragment;
  * 从下弹出Dialog 和 复制于com.google.android.material.bottomsheet
  */
 public class BottomSheetDialogFragment extends BaseLogDialogFragment {
+
+    @Nullable
+    private DialogInterface.OnDismissListener mOnDismissListener;
 
     public BottomSheetDialogFragment() {
     }
@@ -69,6 +73,18 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
             return (BottomSheetDialog) getDialog();
         }
         return null;
+    }
+
+    public void setOnDismissListener(@Nullable DialogInterface.OnDismissListener listener) {
+        mOnDismissListener = listener;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mOnDismissListener != null) {
+            mOnDismissListener.onDismiss(dialog);
+        }
     }
 
     @Override
