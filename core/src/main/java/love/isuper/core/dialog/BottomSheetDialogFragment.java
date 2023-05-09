@@ -53,8 +53,6 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
             }
         }
 
-        setSlideCancelable(dialog, isSlideCancelable());
-
         setDialogAnim(dialog);
 
         return dialog;
@@ -194,28 +192,6 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
         return true;
     }
 
-    protected boolean isSlideCancelable() {
-        return true;
-    }
-
-    protected void setSlideCancelable(BottomSheetDialog dialog, boolean slideCancelable) {
-        dialog.getBehavior().addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    if (!slideCancelable) {
-                        dialog.getBehavior().setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-    }
-
     private void setDialogAnim(BottomSheetDialog dialog) {
         Window window = dialog.getWindow();
         if (window != null && getAnimRes() != 0) {
@@ -239,6 +215,13 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
             ViewGroup.LayoutParams lp = rootView.getLayoutParams();
             lp.height = dialogHeight;
             rootView.setLayoutParams(lp);
+        }
+    }
+
+    public void setDraggable(boolean draggable) {
+        if (getDialog() != null && getDialog() instanceof BottomSheetDialog) {
+            BottomSheetDialog bottomSheetDialog = ((BottomSheetDialog)getDialog());
+            bottomSheetDialog.getBehavior().setDraggable(draggable);
         }
     }
 

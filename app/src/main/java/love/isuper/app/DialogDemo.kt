@@ -22,6 +22,7 @@ class DialogDemo : BottomSheetDialogFragment() {
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
         dialog.setContentView(viewBinding.root)
+//        setDraggable(false)
         viewBinding.textView.movementMethod = ScrollingMovementMethod.getInstance()
     }
 }
