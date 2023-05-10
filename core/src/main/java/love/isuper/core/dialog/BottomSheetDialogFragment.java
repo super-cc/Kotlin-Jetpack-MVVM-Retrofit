@@ -18,6 +18,9 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import love.isuper.core.R;
 import love.isuper.core.base.BaseLogDialogFragment;
@@ -181,6 +184,15 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
             windowBackground.setLayerInsetTop(1, metrics.heightPixels);
 
             window.setBackgroundDrawable(windowBackground);
+
+            WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(window.getDecorView());
+            controller.hide(WindowInsetsCompat.Type.navigationBars());
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    controller.show(WindowInsetsCompat.Type.navigationBars());
+                }
+            });
         }
     }
 
