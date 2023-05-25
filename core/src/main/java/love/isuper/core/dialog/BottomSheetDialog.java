@@ -120,11 +120,19 @@ public class BottomSheetDialog extends AppCompatDialog {
         }
     }
 
-    //
     public void setPeekHeight(int height) {
         if (behavior != null) {
             behavior.setPeekHeight(height);
         }
+    }
+
+    /**
+     * 对外提供可设置禁止拖动接口
+     *
+     * @param draggable
+     */
+    protected void setDraggable(boolean draggable) {
+        getBehavior().setDraggable(draggable);
     }
 
     /**
