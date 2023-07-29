@@ -2,6 +2,7 @@ package love.isuper.core.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -72,13 +73,13 @@ public class CustomTitleBar extends ConstraintLayout {
         leftResId = typedArray.getResourceId(R.styleable.CustomerTitleBar_left_icon, 0);
         rightResId = typedArray.getResourceId(R.styleable.CustomerTitleBar_right_icon, 0);
         centerText = typedArray.getText(R.styleable.CustomerTitleBar_center_text);
-        centerTextColor = typedArray.getColor(R.styleable.CustomerTitleBar_center_text_color, -1);
+        centerTextColor = typedArray.getColor(R.styleable.CustomerTitleBar_center_text_color, Color.WHITE);
         centerTextSize = typedArray.getDimension(R.styleable.CustomerTitleBar_center_text_size, 0f);
         leftText = typedArray.getText(R.styleable.CustomerTitleBar_left_text);
-        leftTextColor = typedArray.getColor(R.styleable.CustomerTitleBar_left_text_color, -1);
+        leftTextColor = typedArray.getColor(R.styleable.CustomerTitleBar_left_text_color, Color.WHITE);
         leftTextSize = typedArray.getDimension(R.styleable.CustomerTitleBar_left_text_size, 0f);
         rightText = typedArray.getText(R.styleable.CustomerTitleBar_right_text);
-        rightTextColor = typedArray.getColor(R.styleable.CustomerTitleBar_right_text_color, -1);
+        rightTextColor = typedArray.getColor(R.styleable.CustomerTitleBar_right_text_color, Color.WHITE);
         rightTextSize = typedArray.getDimension(R.styleable.CustomerTitleBar_right_text_size, 0f);
         titleBarBackground = typedArray.getResourceId(R.styleable.CustomerTitleBar_title_bar_background, 0);
         typedArray.recycle();
@@ -117,9 +118,7 @@ public class CustomTitleBar extends ConstraintLayout {
         this.centerText = text;
         if (!TextUtils.isEmpty(centerText)) {
             tvCenter.setText(centerText);
-            if (centerTextColor != -1) {
-                tvCenter.setTextColor(centerTextColor);
-            }
+            tvCenter.setTextColor(centerTextColor);
             if (centerTextSize != 0) {
                 tvCenter.setTextSize(centerTextSize);
             }
@@ -144,9 +143,7 @@ public class CustomTitleBar extends ConstraintLayout {
         this.leftText = text;
         if (!TextUtils.isEmpty(leftText)) {
             tvLeft.setText(leftText);
-            if (leftTextColor != -1) {
-                tvLeft.setTextColor(leftTextColor);
-            }
+            tvLeft.setTextColor(leftTextColor);
             if (leftTextSize != 0) {
                 tvLeft.setTextSize(leftTextSize);
             }
@@ -171,9 +168,7 @@ public class CustomTitleBar extends ConstraintLayout {
         this.rightText = text;
         if (!TextUtils.isEmpty(rightText)) {
             tvRight.setText(rightText);
-            if (rightTextColor != -1) {
-                tvRight.setTextColor(rightTextColor);
-            }
+            tvRight.setTextColor(rightTextColor);
             if (rightTextSize != 0) {
                 tvRight.setTextSize(rightTextSize);
             }
