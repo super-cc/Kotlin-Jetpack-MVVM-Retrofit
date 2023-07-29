@@ -133,7 +133,9 @@ public class CustomTitleBar extends ConstraintLayout {
     }
 
     public void setCenterTextColor(@ColorInt int color) {
-        this.tvCenter.setTextColor(color);
+        if (color != -1) {
+            this.tvCenter.setTextColor(color);
+        }
     }
 
     public void setLeftText(@StringRes int resId) {
@@ -158,7 +160,9 @@ public class CustomTitleBar extends ConstraintLayout {
     }
 
     public void setLeftTextColor(@ColorInt int color) {
-        this.tvLeft.setTextColor(color);
+        if (color != -1) {
+            this.tvLeft.setTextColor(color);
+        }
     }
 
     public void setRightText(@StringRes int resId) {
@@ -183,7 +187,9 @@ public class CustomTitleBar extends ConstraintLayout {
     }
 
     public void setRightTextColor(@ColorInt int color) {
-        this.tvLeft.setTextColor(color);
+        if (color != -1) {
+            this.tvLeft.setTextColor(color);
+        }
     }
 
     public ImageView getIvLeft() {
