@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -99,8 +100,11 @@ public class CustomTitleBar extends ConstraintLayout {
         }
 
         setCenterText(centerText);
+        setCenterTextColor(centerTextColor);
         setLeftText(leftText);
+        setLeftTextColor(centerTextColor);
         setRightText(rightText);
+        setRightTextColor(centerTextColor);
 
         if (titleBarBackground != 0) {
             rootView.setBackgroundResource(titleBarBackground);
@@ -128,6 +132,10 @@ public class CustomTitleBar extends ConstraintLayout {
         }
     }
 
+    public void setCenterTextColor(@ColorInt int color) {
+        this.tvCenter.setTextColor(color);
+    }
+
     public void setLeftText(@StringRes int resId) {
         this.leftText = getContext().getResources().getText(resId);
         setLeftText(this.leftText);
@@ -149,6 +157,10 @@ public class CustomTitleBar extends ConstraintLayout {
         }
     }
 
+    public void setLeftTextColor(@ColorInt int color) {
+        this.tvLeft.setTextColor(color);
+    }
+
     public void setRightText(@StringRes int resId) {
         this.rightText = getContext().getResources().getText(resId);
         setRightText(this.rightText);
@@ -168,6 +180,10 @@ public class CustomTitleBar extends ConstraintLayout {
         } else {
             tvRight.setVisibility(View.GONE);
         }
+    }
+
+    public void setRightTextColor(@ColorInt int color) {
+        this.tvLeft.setTextColor(color);
     }
 
     public ImageView getIvLeft() {
