@@ -100,11 +100,8 @@ public class CustomTitleBar extends ConstraintLayout {
         }
 
         setCenterText(centerText);
-        setCenterTextColor(centerTextColor);
         setLeftText(leftText);
-        setLeftTextColor(centerTextColor);
         setRightText(rightText);
-        setRightTextColor(centerTextColor);
 
         if (titleBarBackground != 0) {
             rootView.setBackgroundResource(titleBarBackground);
