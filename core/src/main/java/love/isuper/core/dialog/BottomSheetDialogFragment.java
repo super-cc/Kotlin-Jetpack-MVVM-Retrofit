@@ -46,15 +46,7 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = new BottomSheetDialog(getActivity(), isDialogTransparent() ? R.style.AppBottomSheetDialogTheme : 0);
-
-        if (isWindowTransparent()) {
-            setTransparentBackground(dialog);
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setWhiteNavigationBar(dialog);
-            }
-        }
+        BottomSheetDialog dialog = new BottomSheetDialog(getActivity(), getDialogTheme());
 
         setDialogAnim(dialog);
 
@@ -157,51 +149,8 @@ public class BottomSheetDialogFragment extends BaseLogDialogFragment {
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
     }
 
-    private void setTransparentBackground(BottomSheetDialog dialog) {
-        Window window = dialog.getWindow();
-        if (window != null && getContext() != null) {
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-            window.setDimAmount(0f);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void setWhiteNavigationBar(BottomSheetDialog dialog) {
-        Window window = dialog.getWindow();
-        if (window != null) {
-            DisplayMetrics metrics = new DisplayMetrics();
-            window.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-            GradientDrawable dimDrawable = new GradientDrawable();
-
-            GradientDrawable navigationBarDrawable = new GradientDrawable();
-            navigationBarDrawable.setShape(GradientDrawable.RECTANGLE);
-            navigationBarDrawable.setColor(Color.WHITE);
-
-            Drawable[] layers = {dimDrawable, navigationBarDrawable};
-
-            LayerDrawable windowBackground = new LayerDrawable(layers);
-            windowBackground.setLayerInsetTop(1, metrics.heightPixels);
-
-            window.setBackgroundDrawable(windowBackground);
-
-            WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(window.getDecorView());
-            controller.hide(WindowInsetsCompat.Type.navigationBars());
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    controller.show(WindowInsetsCompat.Type.navigationBars());
-                }
-            });
-        }
-    }
-
-    protected boolean isWindowTransparent() {
-        return false;
-    }
-
-    protected boolean isDialogTransparent() {
-        return true;
+    protected int getDialogTheme() {
+        return R.style.AppBottomSheetDialogTheme;
     }
 
     private void setDialogAnim(BottomSheetDialog dialog) {
