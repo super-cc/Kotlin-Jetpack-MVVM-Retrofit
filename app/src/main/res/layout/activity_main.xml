@@ -13,7 +13,7 @@
         app:center_text="首页"
         app:layout_constraintTop_toTopOf="parent"
         app:left_icon="@drawable/icon_back"
-        app:right_text="展示Dialog" />
+        app:right_text="功能测试" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
