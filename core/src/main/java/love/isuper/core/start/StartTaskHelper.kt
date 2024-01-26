@@ -103,9 +103,4 @@ object StartTaskHelper {
         resultList
     }
 
-    // 定义一个回调接口
-    interface TaskCallback {
-        fun onTasksCompleted()
-    }
-
 }
